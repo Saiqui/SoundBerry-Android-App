@@ -4,71 +4,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
-
+import './slider_volume.dart';
 import './drawer.dart';
+import './bluetooth_process.dart';
 
+/*
+MyApp runApp=new MyApp();
+
+FlutterBluetoothSerial get() {
+  return runApp.get();
+}
+*/
 void main() => runApp(new MyApp());
 
-///
-///
-///
+
+
+
+
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => new _MyAppState();
 }
-
-///
-///
-///
-
-class sliderVolume extends StatefulWidget {
-  @override
-  _sliderVolumeState createState() => _sliderVolumeState();
-}
-
-class _sliderVolumeState extends State<sliderVolume> {
-  double _minVol = 0;
-  double _maxVol = 100;
-  double _sliderValue = 0;
-  
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Icon(Icons.volume_mute, color: Colors.grey[500],
-        ),
-        Slider(
-          activeColor: Colors.deepPurple,
-          inactiveColor: Colors.grey[400],
-          value: _sliderValue,
-          min: _minVol,
-          max: _maxVol,
-          divisions: 100,
-          onChanged: (double value){
-            setState(() {
-              _sliderValue=value;
-              debugPrint(_sliderValue.round().toString());
-            });
-          },
-        ),
-        Icon(Icons.volume_up, color: Colors.grey[500],
-        ),
-      ],
-    );
-  }
-}
-
 class _MyAppState extends State<MyApp> {
   static final TextEditingController _message = new TextEditingController();
   static final TextEditingController _text = new TextEditingController();
 
-  FlutterBluetoothSerial bluetooth = FlutterBluetoothSerial.instance;
+  FlutterBluetoothSerial _bluetooth = FlutterBluetoothSerial.instance;
+  FlutterBluetoothSerial get bluetooth => _bluetooth;
 
   List<BluetoothDevice> _devices = [];
   BluetoothDevice _device;
   bool _connected = false;
   bool _pressed = false;
 
+  FlutterBluetoothSerial  get() {
+    return bluetooth;
+  }
   ///
   ///
   ///
@@ -271,4 +242,6 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+
 
