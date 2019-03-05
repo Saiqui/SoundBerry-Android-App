@@ -6,7 +6,7 @@ import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 import './slider_volume.dart';
 import './drawer.dart';
-import './bluetooth_process.dart';
+
 
 /*
 MyApp runApp=new MyApp();
