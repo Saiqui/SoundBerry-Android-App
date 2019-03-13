@@ -8,7 +8,7 @@ Création de cette app dans le cadre d'un Projet de deuxième année en *IUT GEI
 
 ## Features
 
-- Connection en SPP au Raspberry
+- Connection Bluetooth en SPP au Raspberry
 - Réglage du Volume via un Slider
 - Réglage du Wifi du Raspberry
 
