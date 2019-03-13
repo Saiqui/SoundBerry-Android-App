@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:flutter/services.dart';
-import 'dart:async';
 
 
-
-class sliderVolume extends StatefulWidget {
+class SliderVolume extends StatefulWidget {
   @override
-  _sliderVolumeState createState() => _sliderVolumeState();
+  _SliderVolumeState createState() => _SliderVolumeState();
 }
 
 
 
-class _sliderVolumeState extends State<sliderVolume> {
+class _SliderVolumeState extends State<SliderVolume> {
   double _minVol = 0;
   double _maxVol = 100;
   double _sliderValue = 0;
   String _volumeCommande ="";
+
+  //TODO
+  //Récuperer la valeur du rasp par le bluetooth
   
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Icon(Icons.volume_mute, color: Colors.grey[500],
         ),
@@ -31,6 +32,7 @@ class _sliderVolumeState extends State<sliderVolume> {
           min: _minVol,
           max: _maxVol,
           divisions: 20,
+          label: '${_sliderValue.round()}',
           onChanged: (double value){
             
             setState(() {
