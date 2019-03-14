@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 class WifiSetup extends StatefulWidget {
   @override
@@ -8,11 +8,25 @@ class WifiSetup extends StatefulWidget {
 }
 
 class _WifiSetupState extends State<WifiSetup> {
+   
   final GlobalKey<FormFieldState<String>> _passwordFieldKey =
     new GlobalKey<FormFieldState<String>>();
 
+  static const menuItems = <String>[
+    'one',
+    'two',
+  ];
+  
+  final List<DropdownMenuItem<String>> _ssidItems = menuItems
+  .map(
+    (String value) => DropdownMenuItem<String>(
+      value: value,
+      child: Text(value),
+    )
+  )
+  .toList();
   String _password;
-
+  String ssiddropdowm = "one";
   
   @override
   Widget build(BuildContext context) {
@@ -24,16 +38,34 @@ class _WifiSetupState extends State<WifiSetup> {
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            TextFormField(
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                filled: true,
-                icon: null,
-                labelText: 'SSID'
-              ),
+            ButtonBar(
+              alignment: MainAxisAlignment.center,
+              children: <Widget>[
+                OutlineButton(
+                  child: Text("Scan Wifi"),
+                  onPressed: (){
+                    FlutterBluetoothSerial.instance.write("w.1");
+                    Fluttertoast.showToast(
+                      msg: "Scan Wifi sur le raspberry",
+                      toastLength: Toast.LENGTH_SHORT,
+                    );
+                  },
+                )
+              ],
+            ),
+              
+            DropdownButton(
+              value: ssiddropdowm,
+              hint: Text("SSID"),
+              onChanged: ((String value){
+                setState(() {
+                  ssiddropdowm = value;
+                });
+              }),
+              items: _ssidItems,
             ),
             SizedBox(
               height: 24.0

@@ -109,7 +109,10 @@ class _MyAppState extends State<MyApp> {
               ListTile(
                 title: new Text("Close"),
                 trailing: Icon(Icons.cancel),
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => MyApp())),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => MyApp()));
+                }
               )
             ],
           ),
