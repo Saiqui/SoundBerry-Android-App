@@ -32,7 +32,7 @@ class _MyAppState extends State<MyApp> {
   FlutterBluetoothSerial  get() {
     return bluetooth;
   }
-
+  
   @override
   void initState() {
     super.initState();

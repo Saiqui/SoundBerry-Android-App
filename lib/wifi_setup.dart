@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
+import 'package:flutter/foundation.dart';
+
+
 class WifiSetup extends StatefulWidget {
   @override
   _WifiSetupState createState() => _WifiSetupState();
@@ -9,12 +12,19 @@ class WifiSetup extends StatefulWidget {
 
 class _WifiSetupState extends State<WifiSetup> {
    
+  static final TextEditingController _text = new TextEditingController();
+   
+  
   final GlobalKey<FormFieldState<String>> _passwordFieldKey =
     new GlobalKey<FormFieldState<String>>();
 
   static const menuItems = <String>[
-    'one',
-    'two',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
   ];
   
   final List<DropdownMenuItem<String>> _ssidItems = menuItems
@@ -27,7 +37,7 @@ class _WifiSetupState extends State<WifiSetup> {
   .toList();
   String _password;
   String ssiddropdowm = "one";
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,11 +62,27 @@ class _WifiSetupState extends State<WifiSetup> {
                       msg: "Scan Wifi sur le raspberry",
                       toastLength: Toast.LENGTH_SHORT,
                     );
+                    FlutterBluetoothSerial.instance.onRead().listen((msg){
+                      setState(() {
+                        _text.clear();
+                        print('Read: $msg');
+                        _text.text += msg;
+                        debugPrint(_text.toString()[1]);
+                      });
+                    });
                   },
                 )
               ],
             ),
-              
+            TextField(
+              controller: _text,
+              maxLines: null,
+              enabled: false,
+              decoration: new InputDecoration(
+                border: InputBorder.none,
+                labelText: 'SSID',
+              ),
+            ),
             DropdownButton(
               value: ssiddropdowm,
               hint: Text("SSID"),
