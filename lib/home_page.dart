@@ -173,6 +173,14 @@ class _MyAppState extends State<MyApp> {
                 padding: EdgeInsets.only(top: 20),
               ),
               SliderVolume(),
+              IconButton(
+                iconSize: 32.0,
+                icon: Icon(Icons.volume_off),
+                tooltip: 'Mute',
+                onPressed: (){
+                  bluetooth.write('m.1');
+                },
+                ),
             ],
           ),
         ),
