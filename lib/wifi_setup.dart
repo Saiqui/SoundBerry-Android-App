@@ -11,9 +11,7 @@ class WifiSetup extends StatefulWidget {
 }
 
 class _WifiSetupState extends State<WifiSetup> {
-   
-  static final TextEditingController _text = new TextEditingController();
-   
+     
   
   final GlobalKey<FormFieldState<String>> _passwordFieldKey =
     new GlobalKey<FormFieldState<String>>();
@@ -89,9 +87,13 @@ class _WifiSetupState extends State<WifiSetup> {
             ButtonBar(
               alignment: MainAxisAlignment.center,
               children: <Widget>[
-                OutlineButton(
+                FlatButton(
                   // child: Text("Scan Wifi"),
                   child: setUpButtonChild(),
+                  highlightColor: Colors.deepPurple[900],
+                  // borderSide: BorderSide(color: Colors.deepPurple[900]),
+                  // borderSide: BorderSide(color: Colors.white),
+                  padding: EdgeInsets.fromLTRB(10.0, 8.0, 10.0, 8.0),
                   onPressed: (){
                     setState(() {
                       if(_state == 0){
@@ -175,7 +177,7 @@ class _PasswordFieldState extends State<PasswordField> {
     return new TextFormField(
       key: widget.fieldKey,
       obscureText: _obscureText,
-      maxLength: 50,
+      // maxLength: 50,
       onSaved: widget.onSaved,
       validator: widget.validator,
       onFieldSubmitted: widget.onFieldSubmitted,
