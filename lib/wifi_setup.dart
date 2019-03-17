@@ -18,15 +18,13 @@ class _WifiSetupState extends State<WifiSetup> {
   final GlobalKey<FormFieldState<String>> _passwordFieldKey =
     new GlobalKey<FormFieldState<String>>();
 
-  static const menuItems = <String>[
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
+  var menuItems = <String>[
+    'a',
+    'z',
+    'e',
+    'r',
   ];
-  
+  /*
   final List<DropdownMenuItem<String>> _ssidItems = menuItems
   .map(
     (String value) => DropdownMenuItem<String>(
@@ -35,8 +33,13 @@ class _WifiSetupState extends State<WifiSetup> {
     )
   )
   .toList();
+*/
+
   String _password;
-  String ssiddropdowm = "one";
+  String ssiddropdowm;
+  String buffer;
+  int _k, _old_k;
+  int _ssiddropdowm;
 
   @override
   Widget build(BuildContext context) {
@@ -64,35 +67,41 @@ class _WifiSetupState extends State<WifiSetup> {
                     );
                     FlutterBluetoothSerial.instance.onRead().listen((msg){
                       setState(() {
-                        _text.clear();
-                        print('Read: $msg');
-                        _text.text += msg;
-                        debugPrint(_text.toString()[1]);
+                        _k = 0;
+                        for (int i = 0; i <= 3; i++) {
+                          _old_k =_k;
+                          while (msg[_k] != ':') {
+                            _k = _k+1;
+                          }
+                          print('_k = $_k');
+                          print('old_k = $_old_k');
+                          print('_i = $i');
+                          menuItems[i] = msg.substring(_old_k, _k);
+                          _k = _k+1;
+                        }
+                        
                       });
                     });
                   },
                 )
               ],
             ),
-            TextField(
-              controller: _text,
-              maxLines: null,
-              enabled: false,
-              decoration: new InputDecoration(
-                border: InputBorder.none,
-                labelText: 'SSID',
-              ),
-            ),
             DropdownButton(
-              value: ssiddropdowm,
+              value: _ssiddropdowm == null ? null : menuItems[_ssiddropdowm],
               hint: Text("SSID"),
+              items: menuItems.map((String value) {
+                return new DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
               onChanged: ((String value){
                 setState(() {
-                  ssiddropdowm = value;
+                  _ssiddropdowm = menuItems.indexOf(value);
                 });
               }),
-              items: _ssidItems,
             ),
+            
             SizedBox(
               height: 24.0
             ),
