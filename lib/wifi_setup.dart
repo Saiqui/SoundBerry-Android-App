@@ -19,21 +19,9 @@ class _WifiSetupState extends State<WifiSetup> {
     new GlobalKey<FormFieldState<String>>();
 
   var menuItems = <String>[
-    'a',
-    'z',
-    'e',
-    'r',
+    'Please','Scan','Wifi','On','The','Raspberry',
   ];
-  /*
-  final List<DropdownMenuItem<String>> _ssidItems = menuItems
-  .map(
-    (String value) => DropdownMenuItem<String>(
-      value: value,
-      child: Text(value),
-    )
-  )
-  .toList();
-*/
+  
 
   String _password;
   String ssiddropdowm;
@@ -41,6 +29,50 @@ class _WifiSetupState extends State<WifiSetup> {
   int _k, _old_k;
   int _ssiddropdowm;
 
+  int _state = 0;
+
+  Widget setUpButtonChild(){
+    if(_state == 0){
+      return Text("Wifi Scan");
+    }
+    else if(_state == 1){
+      return CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.deepPurple[900]),
+      );
+    }
+    else {
+      return Icon(Icons.check, color: Colors.deepPurple[900]);
+    }
+  }
+
+  void wifiConnectProcess(){
+      setState(() {
+        _state = 1;
+      });
+      FlutterBluetoothSerial.instance.write("w.1");
+      Fluttertoast.showToast(
+        msg: "Scan Wifi sur le raspberry",
+        toastLength: Toast.LENGTH_SHORT,
+        );
+      FlutterBluetoothSerial.instance.onRead().listen((msg){
+        setState(() {
+          _k = 0;
+          for (int i = 0; i < menuItems.length; i++) {
+          _old_k =_k;
+          while (msg[_k] != ':') {
+            _k = _k+1;
+            }
+          print('_k = $_k');
+          print('old_k = $_old_k');
+          print('_i = $i');
+          menuItems[i] = msg.substring(_old_k, _k);
+          _k = _k+1;
+          }
+          _state = 2;
+                        
+        });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,30 +90,15 @@ class _WifiSetupState extends State<WifiSetup> {
               alignment: MainAxisAlignment.center,
               children: <Widget>[
                 OutlineButton(
-                  child: Text("Scan Wifi"),
+                  // child: Text("Scan Wifi"),
+                  child: setUpButtonChild(),
                   onPressed: (){
-                    FlutterBluetoothSerial.instance.write("w.1");
-                    Fluttertoast.showToast(
-                      msg: "Scan Wifi sur le raspberry",
-                      toastLength: Toast.LENGTH_SHORT,
-                    );
-                    FlutterBluetoothSerial.instance.onRead().listen((msg){
-                      setState(() {
-                        _k = 0;
-                        for (int i = 0; i <= 3; i++) {
-                          _old_k =_k;
-                          while (msg[_k] != ':') {
-                            _k = _k+1;
-                          }
-                          print('_k = $_k');
-                          print('old_k = $_old_k');
-                          print('_i = $i');
-                          menuItems[i] = msg.substring(_old_k, _k);
-                          _k = _k+1;
-                        }
-                        
-                      });
+                    setState(() {
+                      if(_state == 0){
+                        wifiConnectProcess();
+                      }
                     });
+                    
                   },
                 )
               ],
