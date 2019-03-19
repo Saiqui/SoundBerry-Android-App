@@ -87,11 +87,10 @@ class _WifiSetupState extends State<WifiSetup> {
             ButtonBar(
               alignment: MainAxisAlignment.center,
               children: <Widget>[
-                FlatButton(
-                  // child: Text("Scan Wifi"),
+                OutlineButton(
                   child: setUpButtonChild(),
                   highlightColor: Colors.deepPurple[900],
-                  // borderSide: BorderSide(color: Colors.deepPurple[900]),
+                  borderSide: BorderSide(color: Colors.deepPurple[900]),
                   // borderSide: BorderSide(color: Colors.white),
                   padding: EdgeInsets.fromLTRB(10.0, 8.0, 10.0, 8.0),
                   onPressed: (){
@@ -135,6 +134,20 @@ class _WifiSetupState extends State<WifiSetup> {
               },
 
             ),
+            SizedBox(height: 24.0,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                OutlineButton(
+                  child: Text("Send"),
+                  highlightColor: Colors.deepPurple[900],
+                  borderSide: BorderSide(color: Colors.deepPurple[900]),
+                  // borderSide: BorderSide(color: Colors.white),
+                  padding: EdgeInsets.fromLTRB(10.0, 8.0, 10.0, 8.0),
+                  onPressed: (){},
+                ),
+              ],
+            )
           ],
         ),           
           
@@ -182,8 +195,8 @@ class _PasswordFieldState extends State<PasswordField> {
       validator: widget.validator,
       onFieldSubmitted: widget.onFieldSubmitted,
       decoration: new InputDecoration(
-        border: const UnderlineInputBorder(),
-        filled: true,
+        border: UnderlineInputBorder(),
+        filled: false,
         hintText: widget.hintText,
         labelText: widget.labelText,
         helperText: widget.helperText,
@@ -194,7 +207,7 @@ class _PasswordFieldState extends State<PasswordField> {
             });
           },
           child:
-              new Icon(_obscureText ? Icons.visibility : Icons.visibility_off),
+              new Icon(_obscureText ? Icons.visibility : Icons.visibility_off, color: Colors.deepPurple[900],),
         ),
       ),
     );
