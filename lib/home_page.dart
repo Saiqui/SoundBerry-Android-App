@@ -5,9 +5,11 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'wifi_setup.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'equalizer.dart';
+
 
 
 
@@ -54,7 +56,7 @@ class _MyAppState extends State<MyApp> {
       switch (state) {
         case FlutterBluetoothSerial.CONNECTED:
           setState(() {
-            _connected = true;
+            _connected = true;  
             _pressed = false;
           });
           break;
@@ -115,7 +117,7 @@ class _MyAppState extends State<MyApp> {
               ListTile(
                 title: new Text("Equalizer"),
                 trailing: new Icon(Icons.equalizer),
-                onTap: null,
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => Equalizer())),
               ),
               ListTile(
                 title: new Text("Alexa App"),
