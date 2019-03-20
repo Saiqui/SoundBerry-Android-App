@@ -20,14 +20,16 @@ class _WifiSetupState extends State<WifiSetup> {
     'Please','Scan','Wifi','On','The','Raspberry',
   ];
   
-
   String _password;
   String ssiddropdowm;
+  String _wifiData;
   String buffer;
   int _k, _old_k;
   int _ssiddropdowm;
 
   int _state = 0;
+
+  bool _osbcureTxt = true;
 
   Widget setUpButtonChild(){
     if(_state == 0){
@@ -47,7 +49,7 @@ class _WifiSetupState extends State<WifiSetup> {
       setState(() {
         _state = 1;
       });
-      FlutterBluetoothSerial.instance.write("w.1");
+      FlutterBluetoothSerial.instance.write("w.l");
       Fluttertoast.showToast(
         msg: "Scan Wifi sur le raspberry",
         toastLength: Toast.LENGTH_SHORT,
@@ -116,6 +118,7 @@ class _WifiSetupState extends State<WifiSetup> {
               onChanged: ((String value){
                 setState(() {
                   _ssiddropdowm = menuItems.indexOf(value);
+                  // print(menuItems[_ssiddropdowm]);
                 });
               }),
             ),
@@ -123,13 +126,15 @@ class _WifiSetupState extends State<WifiSetup> {
             SizedBox(
               height: 24.0
             ),
+
             PasswordField(
               fieldKey: _passwordFieldKey,
               helperText: 'Taper le Mot de Passe ici',
               labelText: 'Mot de Passe',
               onFieldSubmitted: (String value) {
                 setState(() {
-                  this._password = value;
+                  _password = value;
+                  print(_password);
                 });
               },
 
@@ -144,7 +149,26 @@ class _WifiSetupState extends State<WifiSetup> {
                   borderSide: BorderSide(color: Colors.deepPurple[900]),
                   // borderSide: BorderSide(color: Colors.white),
                   padding: EdgeInsets.fromLTRB(10.0, 8.0, 10.0, 8.0),
-                  onPressed: (){},
+                  onPressed: (){
+                    FlutterBluetoothSerial.instance.write("w.c");
+                    
+                    _wifiData = menuItems[_ssiddropdowm] + "." + _password.toString();
+                    print(_wifiData);
+                    
+                    
+                    // _wifiData = "test";
+                    // String msg;
+                    
+                    
+                    
+                    FlutterBluetoothSerial.instance.onRead().listen((msg){
+                      if(msg == 'ok') {
+                        FlutterBluetoothSerial.instance.write(_wifiData);
+                      }
+                    });
+                    FlutterBluetoothSerial.instance.write(_wifiData);
+                    _wifiData ="";
+                  },
                 ),
               ],
             )
@@ -183,7 +207,7 @@ class PasswordField extends StatefulWidget {
 }
 
 class _PasswordFieldState extends State<PasswordField> {
-  bool _obscureText = true;
+  bool _obscureText = false;
 
   @override
   Widget build(BuildContext context) {

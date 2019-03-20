@@ -212,7 +212,8 @@ class _MyAppState extends State<MyApp> {
                       else {
                         setState(() {
                           _sliderValue = value;
-                          String _volumeCommande = "v" + _sliderValue.round().toString() + "%";
+                          String _volumeCommande = "v." + _sliderValue.round().toString() + "%";
+                          print(_volumeCommande);
                           bluetooth.write(_volumeCommande);
                         });
                       }
